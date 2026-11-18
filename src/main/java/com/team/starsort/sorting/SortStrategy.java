@@ -10,7 +10,7 @@ import java.util.Comparator;
  * @param <T> тип элементов коллекции
  */
 public interface SortStrategy<T> {
-
+    //Тестовый комментарий для коммита
     /**
      * Отсортировать коллекцию по заданному компаратору.
      * @param list коллекция для сортировки
