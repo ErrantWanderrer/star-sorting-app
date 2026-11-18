@@ -22,6 +22,14 @@ public interface CustomList<T> extends Iterable<T> {
     T get(int index);
 
     /**
+     * Заменить элемент по индексу.
+     * Нужен сортировкам для перестановки элементов на месте (in-place).
+     *
+     * @throws IndexOutOfBoundsException если индекс вне [0, size())
+     */
+    void set(int index, T element);
+
+    /**
      * Количество элементов в коллекции.
      */
     int size();
