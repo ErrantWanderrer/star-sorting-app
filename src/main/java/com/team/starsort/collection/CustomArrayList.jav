@@ -1,4 +1,3 @@
-
 package com.team.starsort.collection;
 
 import java.util.Iterator;
@@ -54,5 +53,27 @@ public class CustomArrayList<T> implements CustomList<T> {
         }
 
         elements = newElements;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        checkIndex(index);
+        return (T) elements[index];
+    }
+
+    @Override
+    public void set(int index, T element) {
+        checkIndex(index);
+        Objects.requireNonNull(element, "Нельзя добавить пустой элемент");
+        elements[index] = element;
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(
+                    "Такого элемента нет. Индекс: " + index
+            );
+        }
     }
 }
