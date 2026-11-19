@@ -37,6 +37,25 @@ public class CustomArrayList<T> implements CustomList<T> {
         size++;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        checkIndex(index);
+        return (T) elements[index];
+    }
+
+    @Override
+    public void set(int index, T element) {
+        checkIndex(index);
+        Objects.requireNonNull(element, "Нельзя добавить пустой элемент");
+        elements[index] = element;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
     private void grow() {
         int newCapacity;
 
@@ -55,25 +74,33 @@ public class CustomArrayList<T> implements CustomList<T> {
         elements = newElements;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public T get(int index) {
-        checkIndex(index);
-        return (T) elements[index];
-    }
-
-    @Override
-    public void set(int index, T element) {
-        checkIndex(index);
-        Objects.requireNonNull(element, "Нельзя добавить пустой элемент");
-        elements[index] = element;
-    }
-
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(
                     "Такого элемента нет. Индекс: " + index
             );
         }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("Больше нет элементов");
+                }
+
+                return (T) elements[currentIndex++];
+            }
+        };
     }
 }
