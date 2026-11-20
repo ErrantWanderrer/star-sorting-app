@@ -34,6 +34,10 @@ public interface CustomList<T> extends Iterable<T> {
      */
     int size();
 
+ default boolean isEmpty() {
+    return size() == 0;
+ }
+
     /**
      * Итератор для for-each и Stream API. Наследуется от Iterable.
      * Без него .stream() не заработает.
