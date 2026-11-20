@@ -19,6 +19,9 @@ public class FileFiller implements DataFiller<Star> {
 	}
 	@Override
 	public CustomList<Star> fill(int size) throws Exception {
+		if (size < 0) {
+		    return new CustomArrayList<>(); 
+		}
 		CustomList<Star> list = new CustomArrayList<>();
 		try (Stream<String> lines = Files.lines(filePath)) {
             lines.limit(size)                      
