@@ -16,5 +16,16 @@ public class RandomFiller implements DataFiller<Star> {
 		return list;
 		
 	}
+	private Star createRandomStar() {
+        String name = "Star-" + random.nextInt(1000);
+        double magnitude = random.nextDouble() * 15.0;
+        long distance = (long) (random.nextDouble() * 10000000);
+
+        return new Star.Builder()
+                .name(name)
+                .apparentMagnitude(magnitude)
+                .distanceLightYears(distance)
+                .build();
+    }
 
 }
