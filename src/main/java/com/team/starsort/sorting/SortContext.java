@@ -19,6 +19,10 @@ public class SortContext<T> {
         this.comparator = Objects.requireNonNull(comparator, "Компоратор не должен быть null");
     }
 
+    public void sort(){
+        strategy.sort(listElements, comparator);
+    }
+
 // TEMP!!! Delete if not needed!!!
 
 //    public CustomList<T> getSortedListElements(){
