@@ -1,6 +1,7 @@
 package com.team.starsort.filling;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import com.team.starsort.collection.CustomArrayList;
 import com.team.starsort.collection.CustomList;
@@ -13,6 +14,9 @@ public class RandomFiller implements DataFiller<Star> {
 	public CustomList<Star> fill(int size){
 		
 		CustomList<Star> list = new CustomArrayList<>();
+		IntStream.range(0,size)
+		    .mapToObj(i->createRandomStar())
+		    .forEach(list::add);
 		return list;
 		
 	}
