@@ -7,8 +7,12 @@ import com.team.starsort.collection.CustomList;
 import com.team.starsort.model.Star;
 
 public class ManualFiller implements DataFiller<Star> {
+	
+	private final Scanner sc;
 
-	private final Scanner sc = new Scanner(System.in);
+	public ManualFiller(Scanner sc) {
+	    this.sc = sc;
+	}
 
 	@Override
 	public CustomList<Star> fill(int size) {
