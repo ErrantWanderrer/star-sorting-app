@@ -14,7 +14,8 @@ public class MergeSort<T> implements SortStrategy<T> {
             return;
         }
 
-        Object[] temp = new Object[list.size()];
+        @SuppressWarnings("unchecked")
+        T[] temp = (T[]) new Object[list.size()];
         mergeSort(list, temp, 0, list.size() - 1, comparator);
     }
 
