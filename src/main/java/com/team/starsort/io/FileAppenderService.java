@@ -25,4 +25,9 @@ public class FileAppenderService {
         }
         Files.write(filePath, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
+    public void appendFoundCount(String elementName, int count) throws IOException {
+        String line = "Элемент [" + elementName + "] встречается [" + count + "] раз";
+        Files.writeString(filePath, line + System.lineSeparator(), 
+                StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    }
 }
