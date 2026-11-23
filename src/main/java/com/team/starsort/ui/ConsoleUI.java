@@ -14,6 +14,7 @@ import com.team.starsort.sorting.ParitySort;
 import com.team.starsort.sorting.QuickSort;
 import com.team.starsort.sorting.SortContext;
 import com.team.starsort.sorting.SortStrategy;
+import com.team.starsort.io.FileAppenderService;
 
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -35,7 +36,7 @@ public class ConsoleUI {
                     case 2 -> doCountOccurrences();
                     case 3 -> doWriteToFile();
                     case 0 -> {
-                        System.out.println("До свидания!");
+                        System.out.println("До новых встреч!");
                         return;
                     }
                     default -> System.out.println("Неверный выбор, попробуйте снова");
@@ -47,7 +48,7 @@ public class ConsoleUI {
     }
 
     private void printMenu() {
-        System.out.println("\n=== Star Sorting App ===");
+        System.out.println("\n... Star Sorting App ...");
         System.out.println("1. Заполнить и отсортировать");
         System.out.println("2. Подсчитать вхождения (доп.4)");
         System.out.println("3. Записать в файл (доп.2)");
@@ -143,8 +144,17 @@ public class ConsoleUI {
             System.out.println("Сначала отсортируйте что-нибудь (пункт 1)");
             return;
         }
-        // TODO: заменить на FileAppenderService от #4 (доп.2)
-        System.out.println("TODO: доп.2 — нужен FileAppenderService от #4");
+
+        System.out.print("Путь к файлу: ");
+        Path path = Path.of(scanner.nextLine().trim());
+
+        try {
+            FileAppenderService appender = new FileAppenderService(path);
+            appender.appendStars(lastSorted);
+            System.out.println("Записано " + lastSorted.size() + " строк в " + path);
+        } catch (Exception e) {
+            System.out.println("Ошибка записи: " + e.getMessage());
+        }
     }
 
     private void printList(CustomList<Star> list) {
