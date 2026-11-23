@@ -4,9 +4,7 @@
 
 - Работаем через **ветки + Pull Request (PR)**. Прямой push в `main` **запрещён**.
 - Ветка = 1 человек = 1 модуль.
-- Долгие ветки — зло. Ветка живёт **максимум 2–3 дня**, потом PR.
 - Перед началом работы и перед PR — **`git pull` актуального `main`**.
-- После мерджа **ветку удаляем**.
 
 ---
 
@@ -18,14 +16,14 @@
 | `feature/sorting` | #2 | `SortContext`, алгоритмы, 3 поля, доп.1 |
 | `feature/collection` | #3 | Кастомная коллекция (3\*), доп.4 (многопоточность), интеграционные тесты |
 | `feature/filling` | #4 | Заполнение (файл/рандом/руками), доп.2, доп.3 |
-| `feature/ui` | #5 | Главный цикл, меню, интеграция всего |
+| `feature/ui` | лид | Главный цикл, меню, интеграция всего ||
 
 ### Как создать ветку
 
 ```bash
-git checkout main
+git switch main
 git pull
-git checkout -b feature/название
+git switch -c feature/название
 ```
 
 Ветку режем **всегда от актуального `main`**, не от чужой ветки.
@@ -60,9 +58,9 @@ docs: add README with run instructions
 ### Перед созданием PR
 
 ```bash
-git checkout main
+git switch main
 git pull
-git checkout feature/твоя-ветка
+git switch feature/твоя-ветка
 git merge main          # подтянуть свежий main в свою ветку
 # прогнать проект локально, убедиться, что собирается и работает
 git push
@@ -109,7 +107,7 @@ git push
 | `SortContext` + алгоритмы | только #2 | — |
 | Кастомная коллекция | только #3 | — |
 | Заполнение (filler’ы, файлы) | только #4 | — |
-| `Main.java` / точка входа / меню | **только #5** | Остальные точку входа НЕ трогают |
+| `Main.java` / точка входа / меню | **только (лид)** | Остальные точку входа НЕ трогают |
 | Тесты на модуль | автор модуля | — |
 | `README.md`, `CONTRIBUTING.md` | лид | — |
 
@@ -146,8 +144,8 @@ git push
 
 ```bash
 # начать работу
-git checkout main && git pull
-git checkout -b feature/название
+git switch main && git pull
+git switch -c feature/название
 
 # коммит
 git add .
@@ -155,13 +153,10 @@ git commit -m "feat(module): description"
 git push -u origin feature/название
 
 # подтянуть свежий main перед PR
-git checkout main && git pull
-git checkout feature/название
+git switch main && git pull
+git switch feature/название
 git merge main
 git push
-
-# после мерджа PR — удалить локальную ветку
-git branch -d feature/название
 ```
 
 ---
