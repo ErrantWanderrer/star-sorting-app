@@ -11,8 +11,11 @@ public class ParitySortTest {
 
     public static void main(String[] args){
         testSortNormal();
+        testSortDuplicates();
+        testSortSingleElement();
         testSortEmpty();
         testSortNullList();
+        testSortNullComparator();
         System.out.println("Все тесты пройдены!");
     }
 
@@ -22,6 +25,20 @@ public class ParitySortTest {
         CustomList<Integer> list = createList(1, 4, 3, 2, 5);
         paritySort.sort(list, Comparator.naturalOrder());
         assertListEquals(List.of(1, 2, 3, 4, 5), list, "testSortNormal");
+    }
+
+    static void testSortDuplicates(){
+        ParitySort<Integer> paritySort = createParitySort();
+        CustomList<Integer> list = createList(1, 5, 2, 1, 4, 3, 4);
+        paritySort.sort(list, Comparator.naturalOrder());
+        assertListEquals(List.of(1, 5, 2, 1, 4, 3, 4), list, "testSortDuplicates");
+    }
+
+    static void testSortSingleElement(){
+        ParitySort<Integer> paritySort = createParitySort();
+        CustomList<Integer> list = createList(4);
+        paritySort.sort(list, Comparator.naturalOrder());
+        assertListEquals(List.of(4), list, "testSortSingleElement");
     }
 
     static void testSortEmpty(){
@@ -36,9 +53,21 @@ public class ParitySortTest {
 
         try {
             paritySort.sort(null, Comparator.naturalOrder());
-            throw new AssertionError("testSortNullList упал: ожидалось что будет null!");
+            throw new AssertionError("testSortNullList упал: ожидалось что список будет null!");
         } catch (NullPointerException e) {
             System.out.println("testSortNullList — OK!");
+        }
+    }
+
+    static void testSortNullComparator(){
+        ParitySort<Integer> paritySort = createParitySort();
+        CustomList<Integer> list = new CustomArrayList<>();
+
+        try {
+            paritySort.sort(list, null);
+            throw new AssertionError("testSortNullComparator упал: ожидалось что компаратор будет null!");
+        } catch (NullPointerException e) {
+            System.out.println("testSortNullComparator — OK!");
         }
     }
 
