@@ -9,12 +9,12 @@ import java.util.Scanner;
 
 public class ManualFillerTest {
     public static void main(String[] args) {
-        System.out.println("\n--- Executing ManualFillerTest ---");
+        System.out.println("Executing ManualFillerTest");
 
         // Эмулируем ввод пользователя через ByteArrayInputStream.
-        // тестируем на то зависает ли программа  при неверном вводе.
+        // тестируем на то - зависает ли программа  при неверном вводе.
         // имитируем следующую последовательность: 
-        // Пустая строка , валидное имя, текст вместо числа затем 3 валидных значения
+        // Пустая строка , валидное имя, текст вместо числа затем коректное название, и 2 валидных значения для величины
         String simulatedInput = "\n" + "Star1\n" + "abc\n" + "Vega\n" + "0.5\n" + "25\n";
         InputStream fakeInput = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner mockScanner = new Scanner(fakeInput);
