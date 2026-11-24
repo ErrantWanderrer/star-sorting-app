@@ -11,8 +11,11 @@ public class QuickSortTest {
 
     public static void main(String[] args) {
         testSortNormal();
+        testSortDuplicates();
+        testSortSingleElement();
         testSortEmpty();
         testSortNullList();
+        testSortNullComparator();
         System.out.println("Все тесты пройдены!");
     }
 
@@ -20,34 +23,48 @@ public class QuickSortTest {
     static void testSortNormal() {
         CustomList<Integer> list = createList(5, 2, 9, 1, 6);
         new QuickSort<Integer>().sort(list, Comparator.naturalOrder());
+        assertListEquals(List.of(1, 2, 5, 6, 9), list, "testSortNormal");
+    }
 
-        List<Integer> expected = List.of(1, 2, 5, 6, 9);
-        List<Integer> actual = toJavaList(list);
+    static void testSortDuplicates(){
+        CustomList<Integer> list = createList(2, 5, 2, 1, 4, 3, 4);
+        new QuickSort<Integer>().sort(list, Comparator.naturalOrder());
+        assertListEquals(List.of(1, 2, 2, 3, 4, 4, 5), list, "testSortDuplicates");
+    }
 
-        if (!expected.equals(actual)) {
-            throw new AssertionError("testSortNormal упал: ожидалось " + expected + ", получилось " + actual + "!");
+    static void testSortSingleElement(){
+        CustomList<Integer> list = createList(4);
+        new QuickSort<Integer>().sort(list, Comparator.naturalOrder());
+
+        if (list.size() > 1){
+            throw new AssertionError("testSortSingleElement упал: размер списка больше 1!");
         }
 
-        System.out.println("testSortNormal - OK!");
+        System.out.println("testSortSingleElement - OK!");
     }
 
     static void testSortEmpty() {
         CustomList<Integer> list = new CustomArrayList<>();
         new QuickSort<Integer>().sort(list, Comparator.naturalOrder());
-
-        if (!list.isEmpty()){
-            throw new AssertionError("testSortEmpty упал: список не является пустым!");
-        }
-
-        System.out.println("testSortEmpty - OK!");
+        assertListEquals(List.of(), list, "testSortEmpty");
     }
 
     static void testSortNullList(){
         try {
             new QuickSort<Integer>().sort(null, Comparator.naturalOrder());
-            throw new AssertionError("testSortNullList упал: ожидалось что будет null!");
+            throw new AssertionError("testSortNullList упал: ожидалось что список будет null!");
         } catch (NullPointerException e) {
             System.out.println("testSortNullList - OK!");
+        }
+    }
+
+    static void testSortNullComparator(){
+        CustomList<Integer> list = new CustomArrayList<>();
+        try {
+            new QuickSort<Integer>().sort(list, null);
+            throw new AssertionError("testSortNullComparator упал: ожидалось что компаратор будет null!");
+        } catch (NullPointerException e) {
+            System.out.println("testSortNullComparator - OK!");
         }
     }
 
@@ -60,11 +77,16 @@ public class QuickSortTest {
         return result;
     }
 
-    private static List<Integer> toJavaList(CustomList<Integer> list) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            result.add(list.get(i));
+    private static <T> void assertListEquals(List<Integer> expected, CustomList<T> actual, String testName) {
+        List<T> temp = new ArrayList<>();
+        for (T item : actual) {
+            temp.add(item);
         }
-        return result;
+
+        if (!expected.equals(temp)){
+            throw new AssertionError(testName + " упал: ожидалось " + expected + ", получилось " + actual + "!");
+        }
+
+        System.out.println(testName + " - OK!");
     }
 }
