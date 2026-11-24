@@ -15,6 +15,8 @@ import com.team.starsort.sorting.QuickSort;
 import com.team.starsort.sorting.SortContext;
 import com.team.starsort.sorting.SortStrategy;
 import com.team.starsort.io.FileAppenderService;
+import com.team.starsort.collection.CounterService;
+import java.util.concurrent.ExecutionException;
 
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -135,8 +137,66 @@ public class ConsoleUI {
             System.out.println("Сначала отсортируйте что-нибудь (пункт 1)");
             return;
         }
-        // TODO: заменить на CounterService от #3 (доп.4)
-        System.out.println("TODO: доп.4 — нужен CounterService от #3");
+
+        System.out.println("\nВведите звезду для поиска:");
+        System.out.print("Имя: ");
+        String name = scanner.nextLine().trim();
+
+        double magnitude;
+        try {
+            System.out.print("Величина: ");
+            magnitude = Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Неверное число для величины");
+            return;
+        }
+
+        long distance;
+        try {
+            System.out.print("Расстояние: ");
+            distance = Long.parseLong(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Неверное число для расстояния");
+            return;
+        }
+
+        Star target;
+        try {
+            target = new Star.Builder()
+                    .name(name)
+                    .apparentMagnitude(magnitude)
+                    .distanceLightYears(distance)
+                    .build();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка валидации: " + e.getMessage());
+            return;
+        }
+
+        int count;
+        try {
+            count = CounterService.countOccurrences(lastSorted, target);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Подсчёт прерван");
+            return;
+        } catch (ExecutionException e) {
+            System.out.println("Ошибка при подсчёте: " + e.getCause().getMessage());
+            return;
+        }
+
+        System.out.println("Элемент " + target + " встречается " + count + " раз");
+
+        System.out.print("Записать результат в файл (доп.2)? 1) нет 2) да: ");
+        if (readInt("Выбор: ") == 2) {
+            System.out.print("Путь к файлу: ");
+            Path path = Path.of(scanner.nextLine().trim());
+            try {
+                new FileAppenderService(path).appendFoundCount(target.toString(), count);
+                System.out.println("Результат записан в " + path);
+            } catch (Exception e) {
+                System.out.println("Ошибка записи: " + e.getMessage());
+            }
+        }
     }
 
     private void doWriteToFile() {
