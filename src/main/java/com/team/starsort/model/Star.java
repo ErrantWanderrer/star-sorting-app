@@ -34,6 +34,29 @@ public final class Star {
     }
 
     /**
+     * Проверяет, что имя звезды валидно:
+     *  - не null, не пустое, не из пробелов;
+     *  - не длиннее 50 символов;
+     *  - содержит только буквы и цифры, разделённые одиночными дефисами.
+     */
+    public static boolean isValidName(String name) {
+        return name != null
+                && !name.isBlank()
+                && name.length() <= 50
+                && name.matches("[\\p{L}\\p{N}]+(-[\\p{L}\\p{N}]+)*");
+    }
+
+    public static boolean isValidMagnitude(double magnitude) {
+        return !Double.isNaN(magnitude)
+                && magnitude >= -26.74
+                && magnitude <= 15.0;
+    }
+
+    public static boolean isValidDistance(long distance) {
+        return distance > 0;
+    }
+
+    /**
      * Формат сериализации: {@code name;apparentMagnitude;distanceLightYears}.
      */
     @Override
@@ -85,19 +108,15 @@ public final class Star {
          * @throws IllegalArgumentException если данные невалидны
          */
         public Star build() {
-            if (name == null || name.isBlank()) {
-                throw new IllegalArgumentException("Название звезды не может быть пустым");
+            if (!isValidName(name)) {
+                throw new IllegalArgumentException(
+                        "Название звезды: буквы и цифры, разделённые одиночным дефисом, " + "до 50 символов, не пустое");
             }
-            if (name.length() > 50) {
-                throw new IllegalArgumentException("Название звезды не должно превышать 50 символов");
-            }
-            if (Double.isNaN(apparentMagnitude)
-                    || apparentMagnitude < -26.74
-                    || apparentMagnitude > 15.0) {
+            if (!isValidMagnitude(apparentMagnitude)) {
                 throw new IllegalArgumentException(
                         "Видимая величина должна быть в диапазоне [-26.74, 15.0] (NaN запрещён)");
             }
-            if (distanceLightYears <= 0) {
+            if (!isValidDistance(distanceLightYears)) {
                 throw new IllegalArgumentException(
                         "Расстояние до Земли должно быть положительным (> 0)");
             }

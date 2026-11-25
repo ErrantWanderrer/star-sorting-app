@@ -21,6 +21,13 @@ public class StarTest {
         testEqualsDifferentFields();
         testHashCodeEqualObjects();
         testToStringFormat();
+        testBuildNameDashOk();
+        testBuildNameCyrillicDashOk();
+        testBuildNameStartsWithDashThrows();
+        testBuildNameEndsWithDashThrows();
+        testBuildNameDoubleDashThrows();
+        testBuildNameWithSpaceThrows();
+        testBuildNameSpecialCharThrows();
         System.out.println("All StarTest passed");
     }
 
@@ -173,5 +180,47 @@ public class StarTest {
             return;
         }
         throw new AssertionError("[" + ctx + "] expected IllegalArgumentException, none thrown");
+    }
+
+    static void testBuildNameDashOk() {
+        Star s = new Star.Builder()
+                .name("Star-123").apparentMagnitude(1).distanceLightYears(1).build();
+        assertEq("Star-123", s.getName(), "dash ok");
+    }
+
+    static void testBuildNameCyrillicDashOk() {
+        Star s = new Star.Builder()
+                .name("Сириус-42").apparentMagnitude(1).distanceLightYears(1).build();
+        assertEq("Сириус-42", s.getName(), "cyrillic dash ok");
+    }
+
+    static void testBuildNameStartsWithDashThrows() {
+        assertThrows(() -> new Star.Builder()
+                        .name("-Star").apparentMagnitude(1).distanceLightYears(1).build(),
+                "starts with dash");
+    }
+
+    static void testBuildNameEndsWithDashThrows() {
+        assertThrows(() -> new Star.Builder()
+                        .name("Star-").apparentMagnitude(1).distanceLightYears(1).build(),
+                "ends with dash");
+    }
+
+    static void testBuildNameDoubleDashThrows() {
+        assertThrows(() -> new Star.Builder()
+                        .name("Star--123").apparentMagnitude(1).distanceLightYears(1).build(),
+                "double dash");
+    }
+
+    static void testBuildNameWithSpaceThrows() {
+        assertThrows(() -> new Star.Builder()
+                        .name("Sirius A").apparentMagnitude(1).distanceLightYears(1).build(),
+                "space in name");
+    }
+
+    static void testBuildNameSpecialCharThrows() {
+        assertThrows(() -> new Star.Builder()
+                        .name("Star!").apparentMagnitude(1).distanceLightYears(1).build(),
+                "special char");
     }
 }
