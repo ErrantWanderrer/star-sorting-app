@@ -26,28 +26,51 @@ public class ManualFiller implements DataFiller<Star> {
 
 	private Star readOneStar(int index, int total) {
 		System.out.println("\n--- Ввод звезды " + index + " из " + total + " ---");
+
+		String name;
 		while (true) {
-			try {
-				System.out.print("Введите имя: ");
-				String name = sc.nextLine().trim();
-				if (name.isEmpty()) {
-					System.out.println("Имя не может быть пустым");
-					continue;
-				}
-
-				System.out.print("Введите величину (дробное число): ");
-				double magnitude = Double.parseDouble(sc.nextLine().trim());
-
-				System.out.print("Введите расстояние (целое число): ");
-				long distance = Long.parseLong(sc.nextLine().trim());
-
-				return new Star.Builder().name(name).apparentMagnitude(magnitude).distanceLightYears(distance).build();
-
-			} catch (NumberFormatException e) {
-				System.out.println("Ошибка: нужно ввести число! Попробуйте снова.");
-			} catch (IllegalArgumentException e) {
-				System.out.println("Ошибка валидации: " + e.getMessage() + ". Попробуйте снова.");
+			System.out.print("Введите имя: ");
+			name = sc.nextLine().trim();
+			if (!Star.isValidName(name)) {
+				System.out.println(
+						"Ошибка: имя — буквы/цифры, разделённые одиночным дефисом, до 50 символов. Попробуйте снова.");
+				continue;
 			}
+			break;
 		}
+
+		double magnitude;
+		while (true) {
+			System.out.print("Введите величину (дробное число): ");
+			try {
+				magnitude = Double.parseDouble(sc.nextLine().trim());
+			} catch (NumberFormatException e) {
+				System.out.println("Ошибка: нужно ввести число!");
+				continue;
+			}
+			if (!Star.isValidMagnitude(magnitude)) {
+				System.out.println("Ошибка: величина должна быть в диапазоне [-26.74, 15.0]. Попробуйте снова.");
+				continue;
+			}
+			break;
+		}
+
+		long distance;
+		while (true) {
+			System.out.print("Введите расстояние (целое число): ");
+			try {
+				distance = Long.parseLong(sc.nextLine().trim());
+			} catch (NumberFormatException e) {
+				System.out.println("Ошибка: нужно ввести целое число!");
+				continue;
+			}
+			if (!Star.isValidDistance(distance)) {
+				System.out.println("Ошибка: расстояние должно быть положительным (> 0). Попробуйте снова.");
+				continue;
+			}
+			break;
+		}
+
+		return new Star.Builder().name(name).apparentMagnitude(magnitude).distanceLightYears(distance).build();
 	}
 }
