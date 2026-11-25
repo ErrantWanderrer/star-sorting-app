@@ -37,7 +37,7 @@ public class FileFiller implements DataFiller<Star> {
             String[] parts = line.split(";");
             
             if (parts.length != 3) {
-                System.err.println("Ошибка формата (ожидается 3 поля): " + line);
+                System.out.println("Ошибка формата (ожидается 3 поля): " + line);
                 return null; 
             }
 
@@ -52,10 +52,10 @@ public class FileFiller implements DataFiller<Star> {
                     .build();
 
         } catch (NumberFormatException e) {
-            System.err.println("Ошибка чисел (не удалось распарсить): " + line);
+            System.out.println("Ошибка чисел (не удалось распарсить): " + line);
             return null;
         } catch (IllegalArgumentException e) {
-            System.err.println("Ошибка валидации: " + e.getMessage() + " | Строка: " + line);
+            System.out.println("Ошибка валидации: " + e.getMessage() + " | Строка: " + line);
             return null;
         }
     }

@@ -44,9 +44,9 @@ public class ManualFiller implements DataFiller<Star> {
 				return new Star.Builder().name(name).apparentMagnitude(magnitude).distanceLightYears(distance).build();
 
 			} catch (NumberFormatException e) {
-				System.err.println("Ошибка: нужно ввести число! Попробуйте снова.");
+				System.out.println("Ошибка: нужно ввести число! Попробуйте снова.");
 			} catch (IllegalArgumentException e) {
-				System.err.println("Ошибка валидации: " + e.getMessage() + ". Попробуйте снова.");
+				System.out.println("Ошибка валидации: " + e.getMessage() + ". Попробуйте снова.");
 			}
 		}
 	}
